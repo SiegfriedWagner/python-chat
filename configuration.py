@@ -1,0 +1,1 @@
+MSG_TERMINATOR = b"\n\n\n\n"

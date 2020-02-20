@@ -1,0 +1,1 @@
+call venv-windows\Scripts\python.exe ./qt_server.py
