@@ -1,1 +1,0 @@
-call venv-windows\Scripts\python.exe ./client_setup.py

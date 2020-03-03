@@ -2,6 +2,8 @@ import os
 import sys
 from PyQt5.QtWidgets import QMainWindow, QComboBox, QSpinBox, QLineEdit, QPushButton, QMessageBox, QApplication
 from PyQt5.uic import loadUi
+from os.path import dirname, join
+import subprocess
 
 
 class SetupWindow(QMainWindow):
@@ -36,10 +38,13 @@ class SetupWindow(QMainWindow):
             return
 
         self.hide()
-        print(sys.executable)
-        status = os.system(f'{sys.executable} qt_client.py "{nickname}" "{name}" {self.ageSpinBox.text()} {self.genderComboBox.currentText()} -a {self.addressLineEdit.text()} -p {self.portSpinBox.text()} -s {self.fontSpinBox.text()} -f "{self.fontComboBox.currentText()}"')
+        if os.name == "nt":
+            status = subprocess.run(f'{join(dirname(sys.executable), "pythonw.exe")} -m chat.client.qt_client "{nickname}" "{name}" {self.ageSpinBox.text()} {self.genderComboBox.currentText()} -a {self.addressLineEdit.text()} -p {self.portSpinBox.text()} -s {self.fontSpinBox.text()} -f "{self.fontComboBox.currentText()}"')
+        elif os.name == "posix":
+            status = os.system(f'{sys.executable} -m chat.client.qt_client "{nickname}" "{name}" {self.ageSpinBox.text()} {self.genderComboBox.currentText()} -a {self.addressLineEdit.text()} -p {self.portSpinBox.text()} -s {self.fontSpinBox.text()} -f "{self.fontComboBox.currentText()}"')
+        else:
+            raise NotImplementedError("Unknown system type, please contact developer with details about your operating system.")
         self.show()
-
 
 
 if __name__ == '__main__':

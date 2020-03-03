@@ -1,9 +1,9 @@
 import sys
 import time
 import argparse
-from configuration import MSG_TERMINATOR
+from chat.shared.configuration import MSG_TERMINATOR
 import asyncio
-from message import ChatMessage, Serializable, LogMessage, IntroductionMessage
+from chat.shared.message import ChatMessage, Serializable, LogMessage, IntroductionMessage
 import os
 import logging
 import dataclasses
@@ -164,9 +164,3 @@ if __name__ == "__main__":
     handler.setLevel(logging.DEBUG)
     logger.addHandler(handler)
     main(address=args.addr, port=args.port, output=args.output)
-
-# if __name__ == '__main__':
-#     import time
-#     while True:
-#         print("online")
-#         time.sleep(1)

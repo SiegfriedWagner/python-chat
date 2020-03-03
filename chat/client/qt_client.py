@@ -2,15 +2,15 @@ import string
 import time
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread, Qt
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTextEdit, QLabel, QPushButton, QScrollArea, QSizePolicy
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTextEdit, QPushButton, QScrollArea
 from PyQt5.uic import loadUi
 import os
 import sys
 import socket
 import argparse
-from MessageWidget import MessageWidget
-from message import ChatMessage, LogMessage, Serializable, IntroductionMessage
-from configuration import  MSG_TERMINATOR
+from chat.shared.MessageWidget import MessageWidget
+from chat.shared.message import ChatMessage, LogMessage, Serializable, IntroductionMessage
+from chat.shared.configuration import  MSG_TERMINATOR
 
 
 class ChatClient(QObject):
@@ -26,7 +26,6 @@ class ChatClient(QObject):
 
         def read(self):
             buffer = b""
-            print("started reading")
             while self.is_open:
                 try:
                     buffer += self.connection.recv(4096)
@@ -34,10 +33,9 @@ class ChatClient(QObject):
                         buffer.strip(MSG_TERMINATOR)
                         self.onReceive.emit(buffer)
                         buffer = b""
-                        print("read emited")
                 except socket.timeout as e:
+                    print(e.args)
                     buffer = b""
-                    print("timeout occuread")
 
 
     def __init__(self, intro_msg):
@@ -75,8 +73,6 @@ class ChatClient(QObject):
 
     @pyqtSlot(bytes)
     def write(self, message: bytes):
-        print("write called")
-
         if self.is_open:
             obj_to_send = Serializable.from_bytes(message)
             if type(obj_to_send) is ChatMessage:
@@ -133,7 +129,6 @@ class MainView(QMainWindow):
             if text.strip() != text and len(text) > 1 and text[-2] not in string.whitespace:
                 splited = text.split()
                 if len(splited) > 1 or len(splited) == 1 and text[-2] == text.strip()[-1]:
-                    print(splited[-1])
                     self.onSend.emit(bytes(LogMessage("", "WORD", splited[-1], time.time())))
         self.prevetext = text
 

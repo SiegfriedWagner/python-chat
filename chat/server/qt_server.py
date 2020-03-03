@@ -4,7 +4,6 @@ from PyQt5.QtCore import QProcess
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextBrowser, QLabel, QWidget, QLineEdit, QApplication, \
     QFileDialog
 from PyQt5.uic import loadUi
-import chat_server
 
 
 class MainView(QMainWindow):
@@ -39,16 +38,17 @@ class MainView(QMainWindow):
             self._server_process.readyRead.connect(self.data_ready)
             addr = self.addressLineEdit.text()
             port = self.portLineEdit.text()
-            self._server_process.start("python",
-                                       ["chat_server.py",
+            self._server_process.start(sys.executable,
+                                       ["-m",
+                                        "chat.server.chat_server",
                                         "--addr", addr,
                                         "--port", port,
                                         "--output", self.output_path])
-            self.startStopButton.setText("Stop Server")
+            self.startStopButton.setText("Stop server")
         else:
             self._server_process.kill()
             self._server_process = None
-            self.startStopButton.setText("Start Server")
+            self.startStopButton.setText("Start server")
 
     def set_output_path(self):
         diag = QFileDialog()

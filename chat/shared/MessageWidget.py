@@ -1,8 +1,8 @@
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QWidget, QLabel, QSpacerItem, QFrame, QVBoxLayout
+from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
 import os
-from message import ChatMessage
+from .message import ChatMessage
 
 
 class MessageWidget(QWidget):
