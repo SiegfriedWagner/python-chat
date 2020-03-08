@@ -1,2 +1,8 @@
 *__pycache__*
 .idea
+run_client.lnk
+run_server.lnk
+run_client.sh
+run_server.sh
+venv*
+*log*
